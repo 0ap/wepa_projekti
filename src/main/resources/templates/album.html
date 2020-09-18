@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Users picture album</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        
+        <h1>User '<span th:text="${user.username}"></span>' picture album</h1>
+        <table>                                 
+            <tr th:each="Image:${imagealbum}">                                             
+                <td><img style="padding-bottom: 10px " th:src="*{'data:image/png;base64,'+ Image.getBase64()}" width="200" height="200"/></td>
+            <table>
+                <tr>Image description:<span th:text="${Image.getDescription()}"></span></tr>
+                <td>likes: <span th:text="${Image.getLikes()}"></span></td>
+                <tr th:each="Commment : ${Image.getComments()}"> 
+                    <td><span th:text="${Commment.getLeftBy()}"></span> commented: <span th:text="${Commment.getContent()}"></span>
+                        on date: <span th:text="${#dates.format(Commment.getPostTime(), 'dd-MM HH:mm')}"></span> likes: <span th:text="${Commment.getLikes()}"> </td>
+                    <td><form th:action="@{/likecommentAlbum}" th:object="${Commment}" method="post">              
+                            <input name="id" type="hidden" th:value="*{id}">
+                            <input name="shortlink" type="hidden" th:value="${user.shortlink}"> 
+                            <input type="submit" value="Like"/>                        
+                        </form></td> 
+                </tr>
+                
+                
+            </table>
+            <form style="padding-bottom: 10px "  th:action="@{/likepicture}" th:object="${user}" method="post">              
+                <input name="userToLike" type="hidden" th:value="*{username}">
+                <input name="id" type="hidden" th:value="${Image.getId()}">
+                <input type="submit" value="Like the picture!"/>                        
+            </form>
+
+
+            <div th:if="${user.username == auth}">
+                <form  style="padding-bottom: 10px " th:action="@{/deletepicture}" th:object="${Image}" method="post">              
+                    <input name="id" type="hidden" th:value="${Image.getId()}">
+                    <input name="username" type="hidden" th:value="${user.username}">                                
+                    <input type="submit" value="Delete the picture"/>                        
+                </form>
+
+                <form style="padding-bottom: 10px "  th:action="@{/setasprofile}" th:object="${Image}" method="post">              
+                    <input name="id" type="hidden" th:value="*{id}">
+                    <input name="username" type="hidden" th:value="${user.username}">
+                    <input type="submit" value="Set as profile picture"/>                        
+                </form>                                   
+            </div>
+
+            <form style="padding-bottom: 10px "  th:action="@{/imagecomment}" th:object="${user}" method="post">                             
+                Your comment: <input type="text" name="comment"/>
+                <input name="id" type="hidden" th:value="${Image.getId()}">   
+                <input name="shortlink" type="hidden" th:value="${user.shortlink}"> 
+                <input type="submit" value="Comment"/>                        
+            </form>
+
+
+        </tr>
+    </table>
+
+    <div th:if="${user.username == auth}">
+        <form style="padding-bottom: 10px" method="POST" th:action="@{/addPicutre}" enctype="multipart/form-data">            
+            Add picture: <input type="file" name="file" id="file"/>
+            Description for image: <input type="text" name="desc" id="desc"/>
+            <input type="submit" value="Add new picture to your album!"/>                        
+        </form></div>
+
+    <form method="POST" th:action="@{/return}">   
+        <input type="submit" value="Return to home"/>                        
+    </form>
+
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+
+
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <style>
+
+
+</style>
+        <meta charset="UTF-8" />
+        <title>WEPA-harjoitustyö</title>
+    </head>
+   <body>
+       <div align="center">       
+        <h2>Hello <span th:text="${auth.username}"/> </h2>
+        <a th:href="${'/user/' + auth.shortlink}"> 
+       <span th:text="${'Your profile'}"/></a>
+        
+        <h3>All user's currently registered</h3>
+         <table style="padding-bottom: 10px ">                      
+       <tr th:each="User:${user}">      
+       <td> <a th:href="${'/user/' + User.shortlink}"> 
+       <span th:text="${User.username}"/></a></td>
+       <td> <a th:href="${'/user/kuva/' + User.username}"></a> </td></tr>                      
+        </table>
+        
+        <div style="padding-bottom: 10px " th:if="${auth.inviteSize() > 0}">
+            You have new friend invites!
+            <tr th:each="Invite:${auth.getInvites()}">
+            <td> <a th:href="${'/invites/' + auth.shortlink}"> 
+                    <span th:text="${'Check invite'}"/></a>
+            </td>
+            </tr>
+        </div>
+    
+        
+        
+        <form style="padding-bottom: 10px" method="POST" th:action="@{/search}">            
+            Search for user:<input type="text" name="username" id="username"/>            
+            <input type="submit" value="Search!"/>                        
+        </form>   
+        
+        
+        <a th:href="@{/logout}">Logout</a>
+       
+       </div>
+    </body>
+</html>

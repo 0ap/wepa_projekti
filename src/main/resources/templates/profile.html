@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>profiili</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div align="center">
+            <h1>Käyttäjän '<span th:text="${user.username}"></span>' profiili</h1>
+            <div th:if="${user.picture != null}">
+                <img th:src="*{'data:image/png;base64,'+ base64EncodedImage}" width="200" height="200"/></img>
+                <div>Likes: <span th:text="${user.profilepic.likes}"></span>
+                    Description: <span th:text="${user.profilepic.getDescription()}"></span></div>
+
+                <form style="padding-bottom: 10px" th:action="@{/likepictureProfile}" th:object="${user}" method="post">              
+                    <input name="userToLike" type="hidden" th:value="${user.shortlink}">
+                    <input name="id" type="hidden" th:value="${user.profilepic.getId()}">        
+                    <input type="submit" value="Like the picture!"/>
+                </form>
+                <h2>Comments on picture</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Comments</th>
+                        <th>User</th> 
+                        <th>Likes</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    <tr th:each="comment : ${user.picture.getComments()}">
+                        <td th:text="${comment.content}"></td>
+                        <td th:text="${comment.leftBy}"></td>
+                        <td th:text="${comment.likes}"></td>
+                        <td th:text="${#dates.format(comment.getPostTime(), 'dd-MM-yyyy HH:mm')}"></td>
+                        <td><form th:action="@{/likecommentProfile}" th:object="${comment}" method="post">              
+                                <input name="id" type="hidden" th:value="*{id}"> 
+                                <input name="shortlink" type="hidden" th:value="${user.shortlink}">
+                                <input type="submit" value="Like"/>                        
+                            </form></td>             
+
+                    </tr>
+                </table>
+
+                <form style="padding-bottom: 10px "  th:action="@{/imagecommentProfile}" th:object="${user}" method="post">                             
+                    Your comment: <input type="text" name="comment"/>
+                    <input name="id" type="hidden" th:value="${user.profilepic.getId()}">   
+                    <input name="shortlink" type="hidden" th:value="${user.shortlink}"> 
+                    <input type="submit" value="Comment"/>                        
+                </form>               
+            </div>
+
+            <h2>Users wall</h2>
+            <div style="padding-bottom: 10px" th:if="${comments.size() > 0}">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Comment</th>
+                        <th>User</th> 
+                        <th>Likes</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    <tr th:each="comment : ${comments}">
+                        <td th:text="${comment.content}"></td>
+                        <td th:text="${comment.leftBy}"></td>
+                        <td th:text="${comment.likes}"></td>
+                        <td th:text="${#dates.format(comment.getPostTime(), 'dd-MM-yyyy HH:mm')}"></td>
+                        <td><form th:action="@{/likecomment}" th:object="${comment}" method="post">              
+                                <input name="id" type="hidden" th:value="*{id}">        
+                                <input type="submit" value="Like"/>                        
+                            </form></td>    
+
+                    </tr>
+                </table>
+            </div>
+
+
+            <form style="padding-bottom: 10px" th:action="@{/comment}" th:object="${user}" method="post">
+                Your comment: <input type="text" name="content"/>        
+                <input name="profile" type="hidden" th:value="${user.username}">        
+                <input type="submit" value="Comment"/>                        
+            </form>       
+
+            <form style="padding-bottom: 10px" th:action="@{/goToAlbum}" th:object="${user}" method="post">                
+                <input name="username" type="hidden" th:value="${user.username}">        
+                <input type="submit" value="Go to album"/>                        
+            </form>   
+
+            <form style="padding-bottom: 10px"th:action="@{/askasfriend}" th:object="${user}" method="post">              
+                <input name="username" type="hidden" th:value="*{username}">        
+                <input type="submit" value="Send a friend invite"/>                        
+            </form>
+
+            <table class="table table-striped">
+
+                <th>Friendlist</th>             
+                <tr th:each="Friend : ${friends}">            
+                    <td th:text="${Friend.username}"></td>          
+                </tr>
+            </table>
+
+            <form method="POST" th:action="@{/return}">   
+                <input type="submit" value="Return to home"/>                        
+            </form>
+
+
+
+        </div>
+    </body>
+</html>

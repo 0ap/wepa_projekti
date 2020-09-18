@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <table>
+            <th>Invite from</th>                       
+            <tr th:each="User:${invites}">
+                <td th:text="${User.username}"/>
+                <td> <a th:href="${'/user/' + User.shortlink}"> 
+                        <span th:text="${'Käyttäjän profiili'}"/></a></td>
+            <form method="POST" th:action="@{/acceptInvite}">
+                <td><input name="username" type="hidden" th:value="${User.username}">
+                    <input type="submit" value="Accept"/>                         
+            </form></td>
+        <td>
+            <form method="POST" th:action="@{/rejectInvite}">
+                <input name="username" type="hidden" th:value="${User.username}">
+                <input type="submit" value="Reject"/>                         
+            </form>
+        </td>
+    </table>
+</body>
+</html>

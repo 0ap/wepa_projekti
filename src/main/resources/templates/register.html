@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Register</title>
+    </head>
+    <body>
+        <h1>Sign up for the site!</h1>        
+        <a th:href="login">Already a user? Click here</a>
+
+
+        <form method="POST" th:action="@{/register}">
+            Username :<input type="text" name="username"/>
+            Password :<input type="password" name="password"/>
+            Shortlink to profile: <input type="text" name="shortlink"/>           
+            <input type="submit" value="Add new account!"/>                        
+        </form>
+        
+        
+
+
+    </body>
+</html>
