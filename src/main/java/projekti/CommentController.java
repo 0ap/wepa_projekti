@@ -63,13 +63,10 @@ public class CommentController {
         UserObject user2 = comment.getMadeBy();
         
         //Check if the authenticated user has already liked the comment - if yes, let's not increase the likes.
-        if (comment.inUserList(user)) {
-            commentRepository.save(comment);
-        } else {
-            comment.increaseLikes(user);
-            commentRepository.save(comment);
-        }
-
+        if (!comment.inUserList(user))
+            comment.increaseLikes(user);          
+            
+        commentRepository.save(comment);
         return "redirect:/user/" + user2.getShortlink();
     }
     
@@ -83,13 +80,10 @@ public class CommentController {
         Comment comment = commentRepository.getById(id);
         UserObject user2 = comment.getMadeBy();
 
-        if (comment.inUserList(user)) {
-            commentRepository.save(comment);
-        } else {
-            comment.increaseLikes(user);
-            commentRepository.save(comment);
-        }
-
+        if (!comment.inUserList(user))
+            comment.increaseLikes(user);      
+            
+        commentRepository.save(comment);
         return "redirect:/user/" + shortlink;
     }
     
@@ -103,12 +97,10 @@ public class CommentController {
         Comment comment = commentRepository.getById(id);
         UserObject user2 = comment.getMadeBy();
 
-        if (comment.inUserList(user)) {
-            commentRepository.save(comment);
-        } else {
-            comment.increaseLikes(user);
-            commentRepository.save(comment);
-        }
+        if (!comment.inUserList(user))
+            comment.increaseLikes(user);  
+            
+        commentRepository.save(comment);        
         return "redirect:/user/" + shortlink + "/album";
     }
     
