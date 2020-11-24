@@ -15,6 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 
+ * MOOC WebDev with Java coursework
+ * Okko Partanen
+ * ImageController controls the likes on pictures, deletion of pictures
+ * and uploads of the pictures.
+ */
+
 @Controller
 public class ImageController {
 
@@ -29,12 +37,14 @@ public class ImageController {
 
     @Autowired
     FileObjectRepository fileObjectRepository;
-
+    
+    
     @PostMapping("/deletepicture")
     public String deletePicture(@RequestParam Long id, @RequestParam String username) {
 
         FileObject fo = fileObjectRepository.getOne(id);
         UserObject user = userRepository.findByUsername(username);
+        //Check if the picture is also the users profile picture - if it is delete it too.
         if (id.equals(user.getProfilepic().getId()))
             user.deleteProfilePicture();
         
@@ -61,9 +71,7 @@ public class ImageController {
         UserObject user2 = userRepository.findByUsername(userToLike);
         FileObject picture = fileObjectRepository.findOneById(id);
 
-        if (picture.getLikedThis().contains(user)) {
-
-        } else {
+        if (!picture.getLikedThis().contains(user)) {        
             picture.increaseLikes(user);
             fileObjectRepository.save(picture);
         }
@@ -81,12 +89,11 @@ public class ImageController {
         UserObject user2 = userRepository.findByShortlink(userToLike);
         FileObject picture = fileObjectRepository.findOneById(id);
 
-        if (picture.getLikedThis().contains(user)) {
-
-        } else {
+        if (!picture.getLikedThis().contains(user)) {        
             picture.increaseLikes(user);
             fileObjectRepository.save(picture);
         }
+        
         return "redirect:/user/" + user2.getShortlink();
     }
 
