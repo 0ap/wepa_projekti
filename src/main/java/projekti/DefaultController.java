@@ -6,6 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/*
+ * WebDev with Java.
+ * Okko Partanen
+ * Default controller.
+ * If user is not authenticated direct them to register page else direct them to front page.
+ */
 @Controller
 public class DefaultController {
     
