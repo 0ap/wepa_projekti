@@ -12,6 +12,13 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/**
+ * 
+ * MOOC WebDev with Java coursework
+ * Okko Partanen
+ * FileObject class handles the pictures.
+ */
+
 @Entity
 @Data
 @NoArgsConstructor
