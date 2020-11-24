@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projekti;
 
 import java.util.Date;
@@ -18,8 +13,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
- *
- * @author O
+ * Concrete Comment class
+ * MOOC WebDev with Java coursework
+ * Okko Partanen
  */
 @Entity
 @Data
@@ -30,7 +26,7 @@ public class Comment extends AbstractPersistable<Long> {
     @Id
     private Long id;
     private String content;
-    private String leftBy;
+    private String leftBy; //User that left the comment.
 
     @OneToOne
     private UserObject madeBy;
@@ -38,14 +34,19 @@ public class Comment extends AbstractPersistable<Long> {
     private int likes;
 
     private Date postTime;
-
+    
+    /**
+    * A list containing users that have 'liked' the comment. 
+    * A comment can be liked by multiple users. One user can like multiple comments.
+    */
+    
     @ManyToMany(cascade = {CascadeType.ALL})
-    private List<UserObject> likedThis;
+    private List<UserObject> likedThis; 
 
     public List<UserObject> getListUsers() {
         return this.likedThis;
     }
-
+    //Returns TRUE if user has already liked the comment.
     public boolean inUserList(UserObject user) {
         return this.likedThis.contains(user);
     }
@@ -53,13 +54,12 @@ public class Comment extends AbstractPersistable<Long> {
     public void increaseLikes(UserObject user) {
         this.likes = this.likes + 1;
         this.likedThis.add(user);
-
     }
 
     public String getContent() {
         return this.content;
     }
-
+    
     public String getLeftBy() {
         return this.leftBy;
     }
