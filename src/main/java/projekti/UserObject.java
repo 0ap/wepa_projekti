@@ -13,32 +13,42 @@ import lombok.NoArgsConstructor;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/*
+ * MOOC WebDev with Java. User class.
+ * Okko Partanen
+ */
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
 public class UserObject extends AbstractPersistable<Long> {
-
+    //User has a name, a password and a shortlink to profile.
     private String username;
     private String password;
     private String shortlink;
-
+    
+    
     @OneToOne(cascade = {CascadeType.ALL})
     private FileObject profilepic;
 
+    //One profile may contain multiple comments
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Comment> profileComments;
 
     @ManyToMany
     private List<UserObject> invites;
 
+    
     @ManyToMany
     private List<UserObject> friends;
-
+    
+    //One user may have multiple pictures
     @OneToMany(cascade = {CascadeType.ALL})
     private List<FileObject> pictures;
 
+     
     public FileObject getPicture() {
         return this.profilepic;
     }
