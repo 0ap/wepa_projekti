@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/*
+* MOOC WebDev with Java.
+* Okko Partanen
+* Controller for handling paths such as users pictures, picture albums and profiles / walls.
+*
+*/
+
+
 @Controller
 public class UserController {
 
